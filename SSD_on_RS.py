@@ -1,7 +1,7 @@
 #####################################################
 ##               Object detection from tensorflow trained model on Realsense Camera                ##
 #####################################################
-
+import os
 import pyrealsense2 as rs
 # Import Numpy for easy array manipulation
 import numpy as np
@@ -27,9 +27,9 @@ PATH_TO_LABEL_MAP = 'label_map.pbtxt'
 NUM_CLASSES = 1
 
 
-#COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
-#EXPECTED = 400
-
+COLORS = np.random.uniform(0, 255, size=(NUM_CLASSES, 3))
+EXPECTED = 400
+THRESHOLD = 0.5
 
 def read_model():
     print("reads frozen graph")
@@ -67,6 +67,10 @@ def object_detection(detection_graph, sess, image_np):
     (boxes, scores, classes, num_detections) = sess.run(
         [boxes, scores, classes, num_detections],
         feed_dict={image_tensor: image_np_expanded})
+
+    boxes =   np.squeeze(boxes)
+    classes = np.squeeze(classes)
+    scores = np.squeeze(scores)
 
     return boxes, classes, scores
 
@@ -147,9 +151,18 @@ def object_detection(detection_graph, sess, image_np):
 
     return startX, startY, endX, endY, image, d"""
 
-"""def compute_dist(frames, image, depth_scale, xmin, ymin, xmax, ymax):
+def compute_dist(frames, image, depth_scale, boxes):
+
+    if len(boxes) == 0:
+        dist = []
+        return dist
 
     (h, w) = image.shape[:2]
+
+    ymin = (boxes[:, 0]*h).astype(int)
+    xmin = (boxes[:, 1]*w).astype(int)
+    ymax = (boxes[:, 2]*h).astype(int)
+    xmax = (boxes[:, 3]*w).astype(int)
 
     #stream alignment
     # Create alignment primitive with color as its target stream:
@@ -160,24 +173,28 @@ def object_detection(detection_graph, sess, image_np):
     aligned_depth_frame = frames.get_depth_frame()
     #colorized_depth = np.asanyarray(colorizer.colorize(aligned_depth_frame).get_data())
 
-    scale = float(h)/float(EXPECTED)
+    #scale = float(h)/float(EXPECTED)
 
     #xmin_depth = int((xmin * EXPECTED) * scale)
-    #ymin_depth = int((ymin * EXPECTED) * scale)
+    #min_depth = int((ymin * EXPECTED) * scale)
     #xmax_depth = int((xmax * EXPECTED) * scale)
     #ymax_depth = int((ymax * EXPECTED) * scale)
     #print(xmin_depth)
     #print(xmax_depth)
     depth = np.asanyarray(aligned_depth_frame.get_data())
+
+    dist = np.zeros(len(xmin))
     # Crop depth data:
-    depth = depth[xmin:xmax, ymin:ymax].astype(float)
+    for i in range(len(xmin)):
+        depth = depth[xmin[i]:xmax[i], ymin[i]:ymax[i]].astype(float)
 
-    # Get data scale from the device and convert to meters
+        # Get data scale from the device and convert to meters
 
-    depth = depth * depth_scale
-    dist, _, _, _ = cv2.mean(depth)
+        depth = depth * depth_scale
+        #dist[i], _, _, _ = cv2.minMaxLoc(depth)
+        dist[i], _, _, _ = cv2.mean(depth)
 
-    return dist"""
+    return dist
 
 """def run_SSD():
     try:
@@ -270,8 +287,8 @@ def start_RS():
     config.enable_stream(rs.stream.color, 640, 480, rs.format.rgb8, 30)
     # Start streaming from file
     profile = pipeline.start(config)
-
-    # depth_scale = profile.get_device().first_depth_sensor().get_depth_scale()
+    depth_sensor = profile.get_device().first_depth_sensor()
+    depth_scale = depth_sensor.get_depth_scale()
 
     colorizer = rs.colorizer()
     # Getting the depth sensor's depth scale (see rs-align example for explanation)
@@ -292,7 +309,7 @@ def start_RS():
 
     # Create opencv window to render image in
     # cv2.namedWindow("Depth Stream", cv2.WINDOW_AUTOSIZE)
-    return pipeline, colorizer
+    return pipeline, colorizer, depth_scale
 
 def get_frames_from_RS(pipeline, colorizer):
     # Get frameset of depth
@@ -310,41 +327,66 @@ def get_frames_from_RS(pipeline, colorizer):
     rgb_image = np.asanyarray(rgb_frame.get_data())
     rgb_image = cv2.cvtColor(rgb_image, cv2.COLOR_BGR2RGB)
 
-    return rgb_image
+    return rgb_image, frames
 
-def display_output(image_np, boxes, classes, scores, category_index):
-    # Visualization of the results of a detection.
-    vis_util.visualize_boxes_and_labels_on_image_array(
-        image_np,
-        np.squeeze(boxes),
-        np.squeeze(classes).astype(np.int32),
-        np.squeeze(scores),
-        category_index,
-        use_normalized_coordinates=True,
-        line_thickness=3,
-    )
+def display_output(image_np, boxes, classes, scores, category_index, dist):
+    (h, w) = image_np.shape[:2]
+
+    if len(dist) > 0:
+         # Visualization of the results of a detection.
+         vis_util.visualize_boxes_and_labels_on_image_array(
+             image_np,
+             boxes,
+             classes.astype(np.int32),
+             scores,
+             category_index,
+             use_normalized_coordinates=True,
+             line_thickness=3,
+             min_score_thresh=0,  # Objects above threshold are already selected before
+         )
+         coor = (int(boxes[0,1]*w), int(boxes[0, 0]*h))
+         cv2.putText(image_np, str(dist[0]), coor, cv2.FONT_HERSHEY_SIMPLEX, 0.25, (255, 255, 255))
+
     cv2.imshow('Detection', cv2.resize(image_np, (1200, 800)))
 
+def select_objects(boxes, classes, scores, thres):
+     idx = np.where(scores >= thres)[0]
+     if idx.size > 0:
+         boxes = boxes[idx, :]
+         classes = classes[idx]
+         scores = scores[idx]
+
+     else:
+         boxes = []
+         classes = []
+         scores = []
+
+     return np.array(boxes), np.array(classes), np.array(scores)
 
 
 def process_image():
     category_index, detection_graph = read_model()
 
-    pipeline, colorizer = start_RS()
+    pipeline, colorizer, depth_scale = start_RS()
 
     with detection_graph.as_default():
         with tf.compat.v1.Session(graph=detection_graph) as sess:
             while True:
-                image_np = get_frames_from_RS(pipeline, colorizer)
+                image_np, frames = get_frames_from_RS(pipeline, colorizer)
 
                 boxes, classes, scores = object_detection(detection_graph, sess, image_np)
-                print("a")
+                boxes_s, classes_s, scores_s = select_objects(boxes, classes, scores, THRESHOLD)
 
-                print(len(classes[0]))
-                print(len(scores[0]))
-                print(boxes)
+                dist = compute_dist(frames, image_np, depth_scale, boxes_s)
+                display_output(image_np, boxes_s, classes_s, scores_s, category_index, dist)
 
-                display_output(image_np, boxes, classes, scores, category_index)
+                """print("a")
+
+                print(np.shape(classes))
+                print(np.shape(scores))
+                print(np.shape(boxes))"""
+
+
 
                 if cv2.waitKey(25) & 0xFF == ord('q'):
                     cv2.destroyAllWindows()
