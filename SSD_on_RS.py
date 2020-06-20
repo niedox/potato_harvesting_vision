@@ -12,6 +12,12 @@ import tensorflow as tf
 from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as vis_util
 from imutils.video import FPS
+from matplotlib.colors import hsv_to_rgb
+from scipy import ndimage
+from skimage.color import rgb2gray
+from sklearn.cluster import KMeans
+
+
 
 
 # Patch the location of gfile
@@ -28,8 +34,12 @@ NUM_CLASSES = 1
 
 
 COLORS = np.random.uniform(0, 255, size=(NUM_CLASSES, 3))
-EXPECTED = 400
 THRESHOLD = 0.5
+SEGMENTATION = "edge" #can be "edge", "kmeans"
+#SKIP = 0
+# defining the  filters
+kernel_laplace = np.array([np.array([1, 1, 1]), np.array([1, -8, 1]), np.array([1, 1, 1])])
+print(kernel_laplace, 'is a laplacian kernel')
 
 def read_model():
     print("reads frozen graph")
@@ -48,6 +58,7 @@ def read_model():
     category_index = label_map_util.create_category_index(categories)
 
     return category_index, detection_graph
+
 
 def object_detection(detection_graph, sess, image_np):
     # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
@@ -151,48 +162,44 @@ def object_detection(detection_graph, sess, image_np):
 
     return startX, startY, endX, endY, image, d"""
 
-def compute_dist(frames, image, depth_scale, boxes):
+
+def compute_dist(depth_frame, depth_scale, boxes):
 
     if len(boxes) == 0:
         dist = []
         return dist
-
-    (h, w) = image.shape[:2]
+    depth = np.asanyarray(depth_frame.get_data())
+    (h, w) = depth.shape[:2]
 
     ymin = (boxes[:, 0]*h).astype(int)
     xmin = (boxes[:, 1]*w).astype(int)
     ymax = (boxes[:, 2]*h).astype(int)
     xmax = (boxes[:, 3]*w).astype(int)
-
     #stream alignment
-    # Create alignment primitive with color as its target stream:
-    align = rs.align(rs.stream.color)
-    frames = align.process(frames)
 
-    # Update color and depth frames:
-    aligned_depth_frame = frames.get_depth_frame()
-    #colorized_depth = np.asanyarray(colorizer.colorize(aligned_depth_frame).get_data())
 
-    #scale = float(h)/float(EXPECTED)
 
-    #xmin_depth = int((xmin * EXPECTED) * scale)
-    #min_depth = int((ymin * EXPECTED) * scale)
-    #xmax_depth = int((xmax * EXPECTED) * scale)
-    #ymax_depth = int((ymax * EXPECTED) * scale)
+
+    #xmin_depth = int((xmin * EXPECTED) * depth_scale)
+    #ymin_depth = int((ymin * EXPECTED) * depth_scale)
+    #xmax_depth = int((xmax * EXPECTED) * depth_scale)
+    #ymax_depth = int((ymax * EXPECTED) * depth_scale)
     #print(xmin_depth)
     #print(xmax_depth)
-    depth = np.asanyarray(aligned_depth_frame.get_data())
 
     dist = np.zeros(len(xmin))
     # Crop depth data:
     for i in range(len(xmin)):
         depth = depth[xmin[i]:xmax[i], ymin[i]:ymax[i]].astype(float)
 
-        # Get data scale from the device and convert to meters
-
+        # Get data scale from the device and
         depth = depth * depth_scale
+        print(depth_scale)
+        print(depth)
+
         #dist[i], _, _, _ = cv2.minMaxLoc(depth)
         dist[i], _, _, _ = cv2.mean(depth)
+
 
     return dist
 
@@ -277,6 +284,7 @@ def compute_dist(frames, image, depth_scale, boxes):
     finally:
         pass"""
 
+
 def start_RS():
     # Create pipeline
     pipeline = rs.pipeline()
@@ -311,29 +319,33 @@ def start_RS():
     # cv2.namedWindow("Depth Stream", cv2.WINDOW_AUTOSIZE)
     return pipeline, colorizer, depth_scale
 
+
 def get_frames_from_RS(pipeline, colorizer):
     # Get frameset of depth
     frames = pipeline.wait_for_frames()
-
-    # Get depth frame
+    # Create alignment primitive with color as its target stream:
+    align = rs.align(rs.stream.color)
+    frames = align.process(frames)
+    # Update color and depth frames:
     depth_frame = frames.get_depth_frame()
+    colorized_depth = np.asanyarray(colorizer.colorize(depth_frame).get_data())
+    # Get depth frame
     rgb_frame = frames.get_color_frame()
 
     # Colorize depth frame to jet colormap
-    depth_color_frame = colorizer.colorize(depth_frame)
-
+    colorized_depth = colorizer.colorize(depth_frame)
     # Convert depth_frame to numpy array to render image in opencv
-    depth_color_image = np.asanyarray(depth_color_frame.get_data())
+    colorized_depth = np.asanyarray(colorized_depth.get_data())
     rgb_image = np.asanyarray(rgb_frame.get_data())
     rgb_image = cv2.cvtColor(rgb_image, cv2.COLOR_BGR2RGB)
 
-    return rgb_image, frames
+    return rgb_image, colorized_depth, frames
 
-def display_output(image_np, boxes, classes, scores, category_index, dist):
+def display_output(image_np, boxes, classes, scores, category_index, dist, name):
     (h, w) = image_np.shape[:2]
 
     if len(dist) > 0:
-         # Visualization of the results of a detection.
+         # Visualization of the results of a detection.q
          vis_util.visualize_boxes_and_labels_on_image_array(
              image_np,
              boxes,
@@ -344,10 +356,12 @@ def display_output(image_np, boxes, classes, scores, category_index, dist):
              line_thickness=3,
              min_score_thresh=0,  # Objects above threshold are already selected before
          )
-         coor = (int(boxes[0,1]*w), int(boxes[0, 0]*h))
-         cv2.putText(image_np, str(dist[0]), coor, cv2.FONT_HERSHEY_SIMPLEX, 0.25, (255, 255, 255))
+         for i in range(len(dist)):
+           coor = (int(boxes[i,1]*w), int(boxes[i, 0]*h))
+           cv2.putText(image_np, "dist: " + str(round(dist[i], 2)) + " [m]", coor, cv2.FONT_HERSHEY_SIMPLEX, 0.35, (255, 255, 255))
 
-    cv2.imshow('Detection', cv2.resize(image_np, (1200, 800)))
+    cv2.imshow(name, image_np) #cv2.resize(image_np, (1200, 800)
+
 
 def select_objects(boxes, classes, scores, thres):
      idx = np.where(scores >= thres)[0]
@@ -364,7 +378,67 @@ def select_objects(boxes, classes, scores, thres):
      return np.array(boxes), np.array(classes), np.array(scores)
 
 
+
+
+
+def instance_seg(image, boxes_s):
+    (h, w) = image.shape[:2]
+    out_l = []
+    box_h, box_w = [], []
+    #crop image
+    for i in range(boxes_s.shape[0]):
+        xmin = (boxes_s[i, 0] * h).astype(int)
+        ymin = (boxes_s[i, 1] * w).astype(int)
+        xmax = (boxes_s[i, 2] * h).astype(int)
+        ymax = (boxes_s[i, 3] * w).astype(int)
+        crop = image[xmin:xmax, ymin:ymax]
+
+
+        #edge detection
+        if SEGMENTATION == "edge":
+            # converting to grayscale
+            gray = rgb2gray(crop)
+            if out_l == []:
+                out_l = ndimage.convolve(gray, kernel_laplace, mode='reflect')
+                out_l = out_l.reshape(out_l.shape[0]*out_l.shape[1])
+                box_h = [(ymax-ymin)]
+                box_w = [(xmax-xmin)]
+            else:
+                edge_im = ndimage.convolve(gray, kernel_laplace, mode='reflect')
+                linear_edge_im = edge_im.reshape(edge_im.shape[0]*edge_im.shape[1])
+                box_h = np.append(box_h, (ymax-ymin))
+                box_w = np.append(box_w, (xmax-xmin))
+                print("shape pre", np.shape(out_l))
+                print("shape lin", np.shape(edge_im))
+                out_l = np.append(out_l, linear_edge_im)
+                print("shape", np.shape(out_l))
+
+        elif SEGMENTATION == "kmeans":
+            # clustering
+            image = image/255.0
+            pic_n = image.reshape(image.shape[0] * image.shape[1], image.shape[2])
+            kmeans = KMeans(n_clusters=5, random_state=0).fit(pic_n)
+            pic2show = kmeans.cluster_centers_[kmeans.labels_]
+            out_l = pic2show.reshape(image.shape[0], image.shape[1], image.shape[2])
+
+    #region based
+    """gray_r = gray.reshape(gray.shape[0] * gray.shape[1])
+    for i in range(gray_r.shape[0]):
+        print(i)
+        if gray_r[i] > gray_r.mean():
+            gray_r[i] = 1
+        else:
+            gray_r[i] = 0
+
+    out_l = gray_r.reshape(gray.shape[0], gray.shape[1])"""
+
+
+    return out_l, box_h, box_w
+    #plt.imshow(out_l, cmap='gray')
+
 def process_image():
+    #i = float('Inf')
+
     category_index, detection_graph = read_model()
 
     pipeline, colorizer, depth_scale = start_RS()
@@ -372,13 +446,29 @@ def process_image():
     with detection_graph.as_default():
         with tf.compat.v1.Session(graph=detection_graph) as sess:
             while True:
-                image_np, frames = get_frames_from_RS(pipeline, colorizer)
+
+                image_np, colorized_depth, frames = get_frames_from_RS(pipeline, colorizer)
+
+                #i = i+1
+                #if i > SKIP:
+                #i = 0
 
                 boxes, classes, scores = object_detection(detection_graph, sess, image_np)
                 boxes_s, classes_s, scores_s = select_objects(boxes, classes, scores, THRESHOLD)
+                dist = compute_dist(frames.get_depth_frame(), depth_scale, boxes_s)
 
-                dist = compute_dist(frames, image_np, depth_scale, boxes_s)
-                display_output(image_np, boxes_s, classes_s, scores_s, category_index, dist)
+                mask_im, box_h, box_w = instance_seg(colorized_depth, boxes_s)
+                display_output(image_np, boxes_s, classes_s, scores_s, category_index, dist, 'RGB')
+                display_output(colorized_depth, boxes_s, classes_s, scores_s, category_index, dist, 'Depth')
+                #display_output(mask_im, boxes_s, classes_s, scores_s, category_index, dist, 'Mask')
+                if mask_im != []:
+                    buff = 0
+                    for i in range(boxes_s.shape[0]):
+                        nb_pixels = box_h[i]*box_w[i]
+                        mask_im_cur = mask_im[buff:(buff+nb_pixels)]
+                        mask_im_cur = np.reshape(mask_im_cur, (box_w[i], box_h[i]))
+                        cv2.imshow("mask " + str(i), mask_im_cur)
+                        buff = buff + nb_pixels
 
                 """print("a")
 
@@ -394,4 +484,6 @@ def process_image():
 
 if __name__ == '__main__':
     #run_SSD()
+
+
     process_image()
