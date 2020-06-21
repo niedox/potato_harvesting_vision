@@ -8,6 +8,13 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -66,7 +73,7 @@
       <workItem from="1590760603648" duration="10694000" />
       <workItem from="1591004216139" duration="6889000" />
       <workItem from="1592138050768" duration="690000" />
-      <workItem from="1592405231371" duration="18887000" />
+      <workItem from="1592405231371" duration="23579000" />
     </task>
     <servers />
   </component>
@@ -87,6 +94,6 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/potato_harvesting_vision$SSD_on_RS.coverage" NAME="SSD_on_RS Coverage Results" MODIFIED="1592647115023" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/potato_harvesting_vision$SSD_on_RS.coverage" NAME="SSD_on_RS Coverage Results" MODIFIED="1592771306587" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
