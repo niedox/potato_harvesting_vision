@@ -9,12 +9,12 @@ import RS_camera
 
 from utils import display_output
 from image_processing import ImageProcessing
-from compute_coor import get_dist
+from compute_coor import get_dist, get_coor
 from skimage.color import gray2rgb
 from imutils import grab_contours
 
 #CONSTANTS
-MODEL_NAME              = 'mobilenet_v1_2'
+MODEL_NAME              = 'faster_rcnn_v2'
 PATH_TO_FROZEN_GRAPH    = 'trained_model/' + MODEL_NAME + '/frozen_inference_graph.pb'
 PATH_TO_LABEL_MAP       = 'label_map.pbtxt'
 NUM_CLASSES             = 1
@@ -40,7 +40,7 @@ COLORS = np.random.uniform(0, 255, size=(NUM_CLASSES, 3))
 def process_vision():
     ip = ImageProcessing(PATH_TO_FROZEN_GRAPH, PATH_TO_LABEL_MAP, NUM_CLASSES, SEG_TYPE)
     category_index, detection_graph = ip.read_model()
-    pipeline, colorizer, depth_scale = RS_camera.start_RS()
+    pipeline, colorizer, depth_scale, pipeline = RS_camera.start_RS()
 
     with detection_graph.as_default():
         with tf.compat.v1.Session(graph=detection_graph) as sess:
@@ -76,6 +76,11 @@ def process_vision():
                             print(v)
                             cv2.line(image_np, (xo, yo), (xo + int(100*v[1]), yo + int(100 * v[0])),
                                      (0, 0, 255), thickness=2)
+                            x_pix = (xo + boxes_s[i, 3] * image_np.shape[1])/2
+                            y_pix = (yo + boxes_s[i, 2] * image_np.shape[1])/2
+                            x, y, z = get_coor(x_pix, y_pix, dist[i], pipeline)
+                            print("x: ", x, "y: ", y, "z: ", z)
+
                             #cv2.imshow("mask " + str(i), mask_im_cur)
 
                         elif POSE_TYPE == 1:
@@ -105,6 +110,8 @@ def process_vision():
 
                 display_output(image_np, boxes_s, classes_s, scores_s, category_index, dist, 'RGB')
                 display_output(colorized_depth, boxes_s, classes_s, scores_s, category_index, dist, 'Depth')
+
+
 
                 if cv2.waitKey(25) & 0xFF == ord('q'):
                     cv2.destroyAllWindows()

@@ -34,7 +34,7 @@ def start_RS():
 
     # Create opencv window to render image in
     # cv2.namedWindow("Depth Stream", cv2.WINDOW_AUTOSIZE)
-    return pipeline, colorizer, depth_scale
+    return pipeline, colorizer, depth_scale, pipeline
 
 def get_frames(pipeline, colorizer):
     # Get frameset of depth

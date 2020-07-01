@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import pyrealsense2 as rs
 
 def get_dist(depth_frame, depth_scale, boxes):
 
@@ -34,6 +35,15 @@ def get_dist(depth_frame, depth_scale, boxes):
         dist[i], _, _, _ = cv2.mean(depth)
 
     return dist
+
+def get_coor(x, y, depth, pipeline):
+    profile = pipeline.get_active_profile()
+    depth_profile = rs.video_stream_profile(profile.get_stream(rs.stream.depth))
+    depth_intrinsics = depth_profile.get_intrinsics()
+
+    result = rs.rs2_deproject_pixel_to_point(depth_intrinsics, [x, y], depth)
+    #result[0]: right, result[1]: down, result[2]: forward
+    return result[2], -result[0], -result[1]
 
 #def get_pixel_dist:
 
