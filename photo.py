@@ -1,8 +1,8 @@
 import RS_camera
 import cv2
 
-pipeline, colorizer, depth_scale = RS_camera.start_RS()
-photo_idx = 106
+pipeline, colorizer, depth_scale, _ = RS_camera.start_RS()
+photo_idx = 252
 while True:
 
     image_np, colorized_depth, frames = RS_camera.get_frames(pipeline, colorizer)

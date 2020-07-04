@@ -110,7 +110,6 @@ class ImageProcessing():
 
             # edge detection
             if self.seg_type == "edge":
-                print(self.kernel, 'is a laplacian kernel')
                 # converting to grayscale
                 #gray = rgb2gray(crop)
                 gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)

@@ -7,6 +7,7 @@ def get_dist(depth_frame, depth_scale, boxes):
     if len(boxes) == 0:
         dist = []
         return dist
+
     depth = np.asanyarray(depth_frame.get_data())
     (h, w) = depth.shape[:2]
 
@@ -27,12 +28,15 @@ def get_dist(depth_frame, depth_scale, boxes):
     dist = np.zeros(len(xmin))
     # Crop depth data:
     for i in range(len(xmin)):
-        depth = depth[xmin[i]:xmax[i], ymin[i]:ymax[i]].astype(float)
+        x = (xmax[i] - xmin[i])/2 + xmin[i]
+        y = (ymax[i] - ymin[i])/2 + ymin[i]
+        """depth = depth[xmin[i]:xmax[i], ymin[i]:ymax[i]].astype(float)
         # Get data scale from the device and
         depth = depth * depth_scale
 
         #dist[i], _, _, _ = cv2.minMaxLoc(depth)
-        dist[i], _, _, _ = cv2.mean(depth)
+        dist[i], _, _, _ = cv2.mean(depth)"""
+        dist[i] = depth_frame.get_distance(int(x), int(y))
 
     return dist
 
@@ -42,15 +46,45 @@ def get_coor(x, y, depth, pipeline):
     depth_intrinsics = depth_profile.get_intrinsics()
 
     result = rs.rs2_deproject_pixel_to_point(depth_intrinsics, [x, y], depth)
-    #result[0]: right, result[1]: down, result[2]: forward
-    return result[2], -result[0], -result[1]
+    return result[0], result[1], result[2]
+
+def compute_angle(axis):
+    y = axis[0]
+    x = axis[1]
+
+    if x == 0:
+        return 0
+    else:
+        angle = np.arctan(y/x)
+    return angle
+
 
 #def get_pixel_dist:
 
+def compute_size(box, dist, h, w, pipeline):
 
-"""def get_coor(image, depth_frame, boxes):
-    (h,w) = image.shape[:2]
-    center = [int(h/2), int(w/2)]"""
+    #coor in pixels
+    ymin = (box[0] * h).astype(int)
+    xmin = (box[1] * w).astype(int)
+    ymax = (box[2] * h).astype(int)
+    xmax = (box[3] * w).astype(int)
+
+    xmid = (xmin+xmax)/2
+    ymid = (ymin+ymax)/2
+
+    xmid_m, ymid_m, _ = get_coor(xmid, ymid, dist, pipeline)
+
+    xmid_wrt_center = xmid -w/2
+    ymid_wrt_center = ymid -h/2
+
+    ratio_x = xmid_wrt_center/xmid_m
+    ratio_y = ymid_wrt_center/ymid_m
+
+    box_height = (ymax-ymin)/ratio_y
+    box_width = (xmax-xmin)/ratio_x
+
+    return box_height, box_width
+
 
 
 

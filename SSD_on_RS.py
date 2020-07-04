@@ -7,14 +7,14 @@ import cv2
 import tensorflow as tf
 import RS_camera
 
-from utils import display_output
+from utils import display_output, draw_orientation
 from image_processing import ImageProcessing
-from compute_coor import get_dist, get_coor
-from skimage.color import gray2rgb
-from imutils import grab_contours
+from compute_coor import get_dist, get_coor, compute_angle, compute_size
+
+
 
 #CONSTANTS
-MODEL_NAME              = 'faster_rcnn_v2'
+MODEL_NAME              = 'mobilenet_igluna_v6'
 PATH_TO_FROZEN_GRAPH    = 'trained_model/' + MODEL_NAME + '/frozen_inference_graph.pb'
 PATH_TO_LABEL_MAP       = 'label_map.pbtxt'
 NUM_CLASSES             = 1
@@ -40,7 +40,7 @@ COLORS = np.random.uniform(0, 255, size=(NUM_CLASSES, 3))
 def process_vision():
     ip = ImageProcessing(PATH_TO_FROZEN_GRAPH, PATH_TO_LABEL_MAP, NUM_CLASSES, SEG_TYPE)
     category_index, detection_graph = ip.read_model()
-    pipeline, colorizer, depth_scale, pipeline = RS_camera.start_RS()
+    pipeline, colorizer, depth_scale = RS_camera.start_RS()
 
     with detection_graph.as_default():
         with tf.compat.v1.Session(graph=detection_graph) as sess:
@@ -63,25 +63,29 @@ def process_vision():
 
                         mask_im_cur = mask_im[buff:(buff + nb_pixels)]
                         mask_im_cur = np.reshape(mask_im_cur, (int(box_w[i]), int(box_h[i])))
-
                         if POSE_TYPE == 0:
+                            h, w = image_np.shape[:2]
+
                             v = ip.principal_axis(mask_im_cur)
 
                             #mask_im_cur = gray2rgb(mask_im_cur)
                             #yo = mask_im_cur.shape[0]
                             #cv2.line(mask_im_cur, (0, yo), (int(100*v[0][1]), yo + int(100*v[0][0])),
                             #        (0, 0, 255), thickness=2)
-                            xo = (boxes_s[i, 1] * image_np.shape[1]).astype(int)
-                            yo = (boxes_s[i, 0] * image_np.shape[0]).astype(int)
-                            print(v)
-                            cv2.line(image_np, (xo, yo), (xo + int(100*v[1]), yo + int(100 * v[0])),
-                                     (0, 0, 255), thickness=2)
-                            x_pix = (xo + boxes_s[i, 3] * image_np.shape[1])/2
-                            y_pix = (yo + boxes_s[i, 2] * image_np.shape[1])/2
-                            x, y, z = get_coor(x_pix, y_pix, dist[i], pipeline)
-                            print("x: ", x, "y: ", y, "z: ", z)
+                            xo = (boxes_s[i, 1] * w).astype(int)
+                            yo = (boxes_s[i, 0] * h).astype(int)
+                            x_mid = int((xo + boxes_s[i, 3] * w)/2)
+                            y_mid = int((yo + boxes_s[i, 2] * h)/2)
 
-                            #cv2.imshow("mask " + str(i), mask_im_cur)
+                            angle = compute_angle(v)
+                            draw_orientation(angle, x_mid, y_mid, image_np)
+                            x, y, z = get_coor(x_mid, y_mid, dist[i], pipeline)
+
+                            potato_h, potato_w = compute_size(boxes_s[i, :], dist[i], h, w, pipeline)
+
+                            print(potato_h, potato_w)
+
+                            #ow("mask " + str(i), mask_im_cur)
 
                         elif POSE_TYPE == 1:
                             _, binary_im = cv2.threshold(mask_im_cur,  0.5, 255, 0)
@@ -119,5 +123,4 @@ def process_vision():
 
 
 
-if __name__ == '__main__':
-    process_vision()
+process_vision()

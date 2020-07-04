@@ -2,20 +2,21 @@ import tensorflow as tf
 import cv2
 import os
 import numpy as np
+import time
 
 from object_detection.utils import visualization_utils as vis_util
 from image_processing import ImageProcessing
 
 
 #CONSTANTS
-MODEL_NAME              = 'mobilenet_igluna_v4'
+MODEL_NAME              = 'mobilenet_igluna_v6'
 PATH_TO_FROZEN_GRAPH    = 'trained_model/' + MODEL_NAME + '/frozen_inference_graph.pb'
 PATH_TO_LABEL_MAP       = 'label_map.pbtxt'
 NUM_CLASSES             = 1
 SEG_TYPE                = "edge" #can be "edge", "kmeans"
-THRESHOLD               = 0.1
+THRESHOLD               = 0.25
 POSE_TYPE               = 0     #0 for PCA, 1 for ellipse fit
-IMAGE_DIR           = 'RS_photos/'
+IMAGE_DIR           = 'test/'
 
 
 ip = ImageProcessing(PATH_TO_FROZEN_GRAPH, PATH_TO_LABEL_MAP, NUM_CLASSES, SEG_TYPE)
@@ -27,9 +28,14 @@ with detection_graph.as_default():
         for filename in os.listdir(IMAGE_DIR):
             if filename.endswith(".jpg") or filename.endswith(".png"):
                 image_np = cv2.imread(os.path.join(IMAGE_DIR, filename))
-                print(image_np.shape)
+                #image_np= cv2.resize(image_np, (512, 512))
+                #print(image_np.shape)
+
+                start = time.time()
                 boxes, classes, scores = ip.object_detection(detection_graph, sess, image_np)
                 boxes_s, classes_s, scores_s = ip.select_objects(boxes, classes, scores, THRESHOLD)
+                stop = time.time()
+                print(stop-start)
 
                 (h, w) = image_np.shape[:2]
 
@@ -48,6 +54,8 @@ with detection_graph.as_default():
                 cv2.imshow('Detection' + str(i), image_np)
 
                 i = i+1
+                if i > 30:
+                    break
             else:
                 continue
 

@@ -1,0 +1,5 @@
+to be done:
+
+compute potato size and dimensions
+ROS msg
+mAP code

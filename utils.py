@@ -25,3 +25,23 @@ def display_output(image_np, boxes, classes, scores, category_index, dist, name)
                        (255, 255, 255))
 
     cv2.imshow(name, image_np)
+
+def draw_orientation(angle, x_o, y_o, image):
+    L = 100 #length of the line in pixels
+
+
+    cv2.circle(image, (x_o, y_o), 3, (0, 0, 255), -1)
+
+    x_line = int(np.cos(angle)*L/2)
+    y_line = int(np.sin(angle)*L/2)
+
+    cv2.line(image, (x_o, y_o), (x_o + x_line, y_o + y_line),
+             (0, 0, 255), thickness=2)
+
+    cv2.line(image, (x_o, y_o), (x_o - x_line, y_o - y_line),
+             (0, 0, 255), thickness=2)
+
+
+
+
+
