@@ -36,7 +36,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.SSD_on_RS">
+  <component name="RunManager" selected="Python.object_detection_on _image">
     <configuration name="SSD_on_RS" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="potato_harvesting_vision" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -147,7 +147,7 @@
       <workItem from="1592138050768" duration="690000" />
       <workItem from="1592405231371" duration="33113000" />
       <workItem from="1592835243050" duration="42245000" />
-      <workItem from="1593536486607" duration="43599000" />
+      <workItem from="1593536486607" duration="55224000" />
     </task>
     <servers />
   </component>
@@ -179,10 +179,10 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/potato_harvesting_vision$main.coverage" NAME="main Coverage Results" MODIFIED="1593783864202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/potato_harvesting_vision$SSD_on_RS.coverage" NAME="SSD_on_RS Coverage Results" MODIFIED="1593861900328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/potato_harvesting_vision$main.coverage" NAME="main Coverage Results" MODIFIED="1593900863522" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/potato_harvesting_vision$potato_harvesting_vision.coverage" NAME="object_detection_on _image Coverage Results" MODIFIED="1593267662843" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/potato_harvesting_vision$object_detection_on__image.coverage" NAME="object_detection_on _image Coverage Results" MODIFIED="1593856812727" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/potato_harvesting_vision$object_detection_on__image.coverage" NAME="object_detection_on _image Coverage Results" MODIFIED="1593902476109" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/potato_harvesting_vision$photo.coverage" NAME="photo Coverage Results" MODIFIED="1593682952205" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

@@ -9,7 +9,7 @@ from image_processing import ImageProcessing
 
 
 #CONSTANTS
-MODEL_NAME              = 'mobilenet_igluna_v6'
+MODEL_NAME              = 'mobilenet_igluna_v8'
 PATH_TO_FROZEN_GRAPH    = 'trained_model/' + MODEL_NAME + '/frozen_inference_graph.pb'
 PATH_TO_LABEL_MAP       = 'label_map.pbtxt'
 NUM_CLASSES             = 1
