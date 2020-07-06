@@ -30,12 +30,14 @@ STANDARD_COLORS = [
 ]
 
 
-def display_output(image_np, boxes, classes, scores, category_index, dist, name, idx_sel):
+def draw_detection(image_np, boxes, classes, scores, category_index, dist, idx_sel, tracking_bool):
     (h, w) = image_np.shape[:2]
 
     ids = (np.ones(len(dist))).astype(int)
-    A = STANDARD_COLORS.index('Green')
-    ids[idx_sel] = A
+
+    if not tracking_bool:
+        color = STANDARD_COLORS.index('Green')
+        ids[idx_sel] = color
 
     if len(dist) > 0:
          # Visualization of the results of a detection.q

@@ -8,7 +8,7 @@ import tensorflow as tf
 import RS_camera
 import dlib
 
-from utils import display_output, draw_orientation
+from utils import draw_detection, draw_orientation
 from image_processing import ImageProcessing
 from compute_coor import get_dist, get_coor, compute_angle, compute_size
 
@@ -23,7 +23,16 @@ SEG_TYPE                = "edge" #can be "edge", "kmeans"
 THRESHOLD               = 0.7
 POSE_TYPE               = 0     #0 for PCA, 1 for ellipse fit
 DISPLAY                 = 1
-EPSILON                 = 20
+EPSILON                 = 60
+TRACKING_LIM            = 10 # consecutive frames
+
+#VARIABLES INIT
+tracking_bool = 0
+consecutive_track = 0
+tracker = None
+prev_coor = None
+x_mid, y_mid = None, None
+
 
 
 def check_for_potato(scores_s):
@@ -137,10 +146,6 @@ def display(angle, boxes_s, classes_s, scores_s, category_index, dist):
 
 
 if __name__ == '__main__':
-    TRACKING = 0
-    tracker = None
-    prev_coor = None
-    x_mid, y_mid = None, None
     ip = ImageProcessing(PATH_TO_FROZEN_GRAPH, PATH_TO_LABEL_MAP, NUM_CLASSES, SEG_TYPE)
     category_index, detection_graph = ip.read_model()
     pipeline, colorizer, depth_scale = RS_camera.start_RS()
@@ -168,16 +173,16 @@ if __name__ == '__main__':
                     x, y, z, x_mid, y_mid = coordinates(box_sel, dist_sel, h, w, pipeline)
 
                     if prev_coor is None:
+                        print("HERE")
                         tracker = create_tracker(box_sel, image_np)
 
                     elif (np.abs(prev_coor[0] - x_mid) < EPSILON and
                                              np.abs(prev_coor[1] - y_mid) < EPSILON):
                         tracker = create_tracker(box_sel, image_np)
+                        consecutive_track = 0
+
                     else:
-                        box_sel = tracking(tracker, image_np)
-                        TRACKING = 1
-                        print("NOT COHERENT")
-                        """FOUND_COHERENT_BOX = 0
+                        FOUND_COHERENT_BOX = 0
                         for i in range(len(dist)):
                             x, y, z, x_mid, y_mid = coordinates(boxes_s[i], dist[i], h, w, pipeline)
 
@@ -197,7 +202,16 @@ if __name__ == '__main__':
 
                         else:
                             box_sel = tracking(tracker, image_np)
-                            print("HERE")"""
+                            tracking_bool = 1
+                            consecutive_track = consecutive_track + 1
+
+                            box_sel = np.expand_dims(box_sel, 0)
+                            dist_sel = get_dist(frames.get_depth_frame(), depth_scale, box_sel)
+                            box_sel = np.squeeze(box_sel)
+
+                            x, y, z, x_mid, y_mid = coordinates(box_sel, dist_sel, h, w, pipeline)
+                            angle, p_w, p_h = pose(box_sel, dist_sel)
+
 
                     angle, p_w, p_h = pose(box_sel, dist_sel)
 
@@ -208,7 +222,9 @@ if __name__ == '__main__':
                     if tracker is not None:
 
                         box_sel = tracking(tracker, image_np)
-                        TRACKING = 1
+                        tracking_bool = 1
+                        consecutive_track = consecutive_track + 1
+
                         box_sel = np.expand_dims(box_sel, 0)
                         dist_sel = get_dist(frames.get_depth_frame(), depth_scale, box_sel)
                         box_sel = np.squeeze(box_sel)
@@ -246,17 +262,20 @@ if __name__ == '__main__':
 
                         draw_orientation(angle, x_mid, y_mid, image_np)
                         draw_orientation(angle, x_mid, y_mid, colorized_depth)
-                        colorized_depth = display_output(colorized_depth, boxes_s, classes_s, scores_s,
-                                                         category_index, dist, "PERCEPTION", idx_sel)
-                        image_np = display_output(image_np, boxes_s, classes_s, scores_s, category_index, dist,
-                                                  "PERCEPTION", idx_sel)
-                        if TRACKING:
+                        colorized_depth = draw_detection(colorized_depth, boxes_s, classes_s, scores_s,
+                                                         category_index, dist, idx_sel, tracking_bool)
+                        image_np = draw_detection(image_np, boxes_s, classes_s, scores_s, category_index, dist,
+                                                idx_sel, tracking_bool)
+                        if tracking_bool:
                             cv2.rectangle(image_np, (int(box_sel[1]*w), int(box_sel[0]*h)),
                                       (int(box_sel[3]*w), int(box_sel[2]*h)),
                                       (0, 255, 0), thickness=2)
                             cv2.rectangle(colorized_depth, (int(box_sel[1] * w), int(box_sel[0] * h)),
                                       (int(box_sel[3] * w), int(box_sel[2] * h)),
                                       (0, 255, 0), thickness=2)
+
+                            cv2.putText(image_np, "TRACKING", (xmin, ymin - 5), font,
+                                        0.7, (0,0,255), thickness=1)
 
                         cv2.arrowedLine(image_np, (x_mid, ymax+10 ), (xmax, ymax + 10),
                                         (0, 255, 0), thickness = 2)
@@ -303,7 +322,16 @@ if __name__ == '__main__':
 
                 if x_mid is not None:
                     prev_coor = [x_mid, y_mid]
-                TRACKING = 0
+
+                tracking_bool = 0
+
+                if consecutive_track >= TRACKING_LIM:
+                    consecutive_track = 0
+                    tracker = None
+                    prev_coor = None
+                    x_mid, y_mid = None, None
+                    print("YES")
+
 
 
 
