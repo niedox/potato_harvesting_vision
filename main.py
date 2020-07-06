@@ -137,6 +137,7 @@ def display(angle, boxes_s, classes_s, scores_s, category_index, dist):
 
 
 if __name__ == '__main__':
+    TRACKING = 0
     tracker = None
     prev_coor = None
     x_mid, y_mid = None, None
@@ -174,6 +175,7 @@ if __name__ == '__main__':
                         tracker = create_tracker(box_sel, image_np)
                     else:
                         box_sel = tracking(tracker, image_np)
+                        TRACKING = 1
                         print("NOT COHERENT")
                         """FOUND_COHERENT_BOX = 0
                         for i in range(len(dist)):
@@ -197,66 +199,102 @@ if __name__ == '__main__':
                             box_sel = tracking(tracker, image_np)
                             print("HERE")"""
 
-                    angle, p_h, p_w = pose(box_sel, dist_sel)
-
-                    if DISPLAY:
-                        org1 = int(box_sel[3] * w)
-                        org2 = int(box_sel[0] * h)
-                        font = cv2.FONT_HERSHEY_SIMPLEX
-                        fontScale = 1 / 2
-                        color = (0, 0, 0)
-                        thickness = 1
-
-                        cv2.putText(image_np, "x: " + str(100 * np.round(x, 2)) + " cm", (org1, org2), font,
-                                    fontScale, color, thickness, cv2.LINE_AA)
-                        cv2.putText(image_np, "y: " + str(100 * np.round(y, 2)) + " cm", (org1, org2 + 15), font,
-                                    fontScale, color, thickness, cv2.LINE_AA)
-                        cv2.putText(image_np, "z: " + str(100 * np.round(z, 2)) + " cm", (org1, org2 + 30), font,
-                                    fontScale, color, thickness, cv2.LINE_AA)
+                    angle, p_w, p_h = pose(box_sel, dist_sel)
 
 
-                        draw_orientation(angle, x_mid, y_mid, image_np)
-                        draw_orientation(angle, x_mid, y_mid, colorized_depth)
-                        colorized_depth = display_output(colorized_depth, boxes_s, classes_s, scores_s, category_index, dist, "pipopapo", idx_sel)
-                        image_np = display_output(image_np, boxes_s, classes_s, scores_s, category_index, dist, "pipopapo", idx_sel)
-
-                        cv2.imshow("pipopapo", np.hstack((image_np, colorized_depth)))
 
 
                 else:
                     if tracker is not None:
 
                         box_sel = tracking(tracker, image_np)
+                        TRACKING = 1
                         box_sel = np.expand_dims(box_sel, 0)
                         dist_sel = get_dist(frames.get_depth_frame(), depth_scale, box_sel)
                         box_sel = np.squeeze(box_sel)
 
                         x, y, z, x_mid, y_mid = coordinates(box_sel, dist_sel, h, w, pipeline)
-                        angle, p_h, p_w = pose(box_sel, dist_sel)
+                        angle, p_w, p_h = pose(box_sel, dist_sel)
+
+
+                if DISPLAY:
+                    if tracker is not None:
+                        org1 = int(box_sel[3] * w)
+                        org2 = int(box_sel[0] * h)
+                        font = cv2.FONT_HERSHEY_SIMPLEX
+                        fontScale = 1 / 2
+                        color = (0, 0, 0)
+                        thickness = 1
+                        xmin = (box_sel[1] * w).astype(int)
+                        ymin = (box_sel[0] * h).astype(int)
+                        xmax = (box_sel[3] * w).astype(int)
+                        ymax = (box_sel[2] * h).astype(int)
+
+                        cv2.putText(image_np, "x: " + str(np.around(100*x, 2)) + " cm", (org1+3, org2 + 15), font,
+                                    fontScale, color, thickness=2)
+                        cv2.putText(image_np, "y: " + str(np.around(100*y, 2)) + " cm", (org1+3, org2 + 30), font,
+                                    fontScale, color, thickness=2)
+                        cv2.putText(image_np, "z: " + str(np.around(100*z, 2)) + " cm", (org1+3, org2 + 45), font,
+                                    fontScale, color, thickness=2)
+
+                        cv2.putText(colorized_depth, "x: " + str(np.around(100 * x, 2)) + " cm", (org1 + 3, org2 + 15), font,
+                                    fontScale, color, thickness=2)
+                        cv2.putText(colorized_depth, "y: " + str(np.around(100 * y, 2)) + " cm", (org1 + 3, org2 + 30), font,
+                                    fontScale, color, thickness=2)
+                        cv2.putText(colorized_depth, "z: " + str(np.around(100 * z, 2)) + " cm", (org1 + 3, org2 + 45), font,
+                                    fontScale, color, thickness=2)
+
                         draw_orientation(angle, x_mid, y_mid, image_np)
                         draw_orientation(angle, x_mid, y_mid, colorized_depth)
+                        colorized_depth = display_output(colorized_depth, boxes_s, classes_s, scores_s,
+                                                         category_index, dist, "PERCEPTION", idx_sel)
+                        image_np = display_output(image_np, boxes_s, classes_s, scores_s, category_index, dist,
+                                                  "PERCEPTION", idx_sel)
+                        if TRACKING:
+                            cv2.rectangle(image_np, (int(box_sel[1]*w), int(box_sel[0]*h)),
+                                      (int(box_sel[3]*w), int(box_sel[2]*h)),
+                                      (0, 255, 0), thickness=2)
+                            cv2.rectangle(colorized_depth, (int(box_sel[1] * w), int(box_sel[0] * h)),
+                                      (int(box_sel[3] * w), int(box_sel[2] * h)),
+                                      (0, 255, 0), thickness=2)
 
-                        cv2.rectangle(image_np, (int(box_sel[1] * w), int(box_sel[0] * h)),
-                                      (int(box_sel[3] * w), int(box_sel[2] * h)), (0, 255, 0), thickness=2)
-                        cv2.rectangle(colorized_depth, (int(box_sel[1] * w), int(box_sel[0] * h)),
-                                      (int(box_sel[3] * w), int(box_sel[2] * h)), (0, 255, 0), thickness=2)
-                        org1 = int(box_sel[3]*w)
-                        org2 = int(box_sel[0]*h)
-                        font = cv2.FONT_HERSHEY_SIMPLEX
-                        fontScale = 1/2
-                        color = (0,0, 0)
-                        thickness = 1
+                        cv2.arrowedLine(image_np, (x_mid, ymax+10 ), (xmax, ymax + 10),
+                                        (0, 255, 0), thickness = 2)
+                        cv2.arrowedLine(image_np, (x_mid, ymax + 10), (xmin, ymax + 10),
+                                        (0, 255, 0), thickness=2)
+                        cv2.arrowedLine(colorized_depth, (x_mid, ymax + 10), (xmax, ymax + 10),
+                                        (0, 255, 0), thickness=2)
+                        cv2.arrowedLine(colorized_depth, (x_mid, ymax + 10), (xmin, ymax + 10),
+                                        (0, 255, 0), thickness=2)
 
-                        cv2.putText(image_np, "x: " + str(100*np.round(x, 2)) + " cm", (org1, org2), font,
-                                    fontScale, color, thickness, cv2.LINE_AA)
-                        cv2.putText(image_np, "y: " + str(100*np.round(y, 2)) + " cm", (org1, org2+15), font,
-                                    fontScale, color, thickness, cv2.LINE_AA)
-                        cv2.putText(image_np, "z: " + str(100*np.round(z, 2)) + " cm", (org1, org2+30), font,
-                                    fontScale, color, thickness, cv2.LINE_AA)
+                        cv2.arrowedLine(image_np, (xmin - 10, y_mid), (xmin - 10, ymax),
+                                        (0, 255, 0), thickness=2)
+                        cv2.arrowedLine(image_np, (xmin - 10, y_mid), (xmin - 10, ymin),
+                                        (0, 255, 0), thickness=2)
+                        cv2.arrowedLine(colorized_depth, (xmin - 10, y_mid), (xmin - 10, ymax),
+                                        (0, 255, 0), thickness=2)
+                        cv2.arrowedLine(colorized_depth, (xmin - 10, y_mid), (xmin - 10, ymin),
+                                        (0, 255, 0), thickness=2)
 
-                    if DISPLAY:
+                        cv2.putText(image_np, str(np.around(100*p_w, 2)) + " cm", (x_mid - 40, ymax + 25), font,
+                                    fontScale, color, thickness=2)
 
-                        cv2.imshow("pipopapo", np.hstack((image_np, colorized_depth)))
+                        cv2.putText(image_np, str(np.around(100*p_h, 2)), (xmin - 60, y_mid), font,
+                                    fontScale, color, thickness=2)
+                        cv2.putText(image_np, "cm", (xmin - 45, y_mid + 30), font,
+                                    fontScale, color, thickness=2)
+
+                        cv2.putText(colorized_depth, str(np.around(100*p_w, 2)) + " cm", (x_mid - 40, ymax + 25), font,
+                                    fontScale, color, thickness=2)
+
+                        cv2.putText(colorized_depth, str(np.around(100*p_h, 2)), (xmin - 60, y_mid), font,
+                                    fontScale, color, thickness=2)
+                        cv2.putText(image_np, "cm", (xmin - 45, y_mid + 30), font,
+                                    fontScale, color, thickness=2)
+
+                    cv2.imshow("PERCEPTION", np.hstack((image_np, colorized_depth)))
+
+
 
 
                 if cv2.waitKey(25) & 0xFF == ord('q'):
@@ -265,6 +303,7 @@ if __name__ == '__main__':
 
                 if x_mid is not None:
                     prev_coor = [x_mid, y_mid]
+                TRACKING = 0
 
 
 
