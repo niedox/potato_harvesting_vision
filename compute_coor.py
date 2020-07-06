@@ -63,6 +63,9 @@ def compute_angle(axis):
 
 def compute_size(box, dist, h, w, pipeline):
 
+    if dist == 0:
+        return 0, 0
+
     #coor in pixels
     ymin = (box[0] * h).astype(int)
     xmin = (box[1] * w).astype(int)
@@ -79,6 +82,7 @@ def compute_size(box, dist, h, w, pipeline):
 
     ratio_x = xmid_wrt_center/xmid_m
     ratio_y = ymid_wrt_center/ymid_m
+
 
     box_height = (ymax-ymin)/ratio_y
     box_width = (xmax-xmin)/ratio_x
