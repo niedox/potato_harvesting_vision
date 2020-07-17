@@ -20,11 +20,12 @@ PATH_TO_FROZEN_GRAPH    = 'trained_model/' + MODEL_NAME + '/frozen_inference_gra
 PATH_TO_LABEL_MAP       = 'label_map.pbtxt'
 NUM_CLASSES             = 1
 SEG_TYPE                = "edge" #can be "edge", "kmeans"
-THRESHOLD               = 0.7
+THRESHOLD               = 0.6
+
 POSE_TYPE               = 0     #0 for PCA, 1 for ellipse fit
 DISPLAY                 = 1
 EPSILON                 = 60
-TRACKING_LIM            = 10 # consecutive frames
+TRACKING_LIM            = 3 # consecutive frames
 
 #VARIABLES INIT
 tracking_bool = 0
@@ -142,7 +143,7 @@ def display(angle, boxes_s, classes_s, scores_s, category_index, dist):
     y_mid = ((ymin + ymax) / 2).astype(int)
 
 
-    draw_orientation(angle, x_mid[idx_max], y_mid[idx_max], image_np)
+    #draw_orientation(angle, x_mid[idx_max], y_mid[idx_max], image_np)
 
 
 if __name__ == '__main__':
@@ -260,8 +261,8 @@ if __name__ == '__main__':
                         cv2.putText(colorized_depth, "z: " + str(np.around(100 * z, 2)) + " cm", (org1 + 3, org2 + 45), font,
                                     fontScale, color, thickness=2)
 
-                        draw_orientation(angle, x_mid, y_mid, image_np)
-                        draw_orientation(angle, x_mid, y_mid, colorized_depth)
+                        #draw_orientation(angle, x_mid, y_mid, image_np)
+                        #draw_orientation(angle, x_mid, y_mid, colorized_depth)
                         colorized_depth = draw_detection(colorized_depth, boxes_s, classes_s, scores_s,
                                                          category_index, dist, idx_sel, tracking_bool)
                         image_np = draw_detection(image_np, boxes_s, classes_s, scores_s, category_index, dist,
@@ -311,7 +312,9 @@ if __name__ == '__main__':
                         cv2.putText(image_np, "cm", (xmin - 45, y_mid + 30), font,
                                     fontScale, color, thickness=2)
 
+
                     cv2.imshow("PERCEPTION", np.hstack((image_np, colorized_depth)))
+
 
 
 
