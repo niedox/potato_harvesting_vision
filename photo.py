@@ -1,4 +1,4 @@
-import rs_camera
+from vision_lib import rs_camera
 import cv2
 
 pipeline, colorizer, depth_scale = rs_camera.start_RS()

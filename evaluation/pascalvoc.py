@@ -17,7 +17,7 @@ import shutil
 # from argparse import RawTextHelpFormatter
 import sys
 
-#import _init_paths
+import _init_paths
 from BoundingBox import BoundingBox
 from BoundingBoxes import BoundingBoxes
 from Evaluator import *

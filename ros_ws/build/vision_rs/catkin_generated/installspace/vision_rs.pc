@@ -1,0 +1,8 @@
+prefix=/home/thibault/Documents/potato_harvesting_vision/ros_ws/install
+
+Name: vision_rs
+Description: Description of vision_rs
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: 

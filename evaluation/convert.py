@@ -28,21 +28,22 @@ def read_content(xml_file: str):
         object_class = object.find("name").text
 
         class_list.append(object_class)
-        list_with_single_boxes = [xmin, ymin, xmax, ymax]
+        list_with_single_boxes = [ymin, xmin, ymax, xmax]
         list_with_all_boxes.append(list_with_single_boxes)
 
     return list_with_all_boxes, class_list
 
 i = 0
-for filename in os.listdir(XML_DIR):
+for filename in sorted(os.listdir(XML_DIR)):
     boxes, class_list = read_content(XML_DIR + filename)
 
     f = open(GROUNDTRUTH_DIR + "file" + str(i) + ".txt", "x")
     i = i + 1
 
+    LIST = [1, 0, 3, 2] #xmin, ymin, xmax, ymax
+
     for j in range(len(class_list)):
         f.write(str(class_list[j]))
-        for k in range(4):
-            print(j, k)
-            f.write(" " + str(boxes[j][k]))
+        for k, list in enumerate(LIST):
+            f.write(" " + str(boxes[j][list]))
         f.write("\n")

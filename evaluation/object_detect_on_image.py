@@ -3,23 +3,21 @@ import cv2
 import os
 import numpy as np
 import time
-import sys
-
 
 from object_detection.utils import visualization_utils as vis_util
-from detection import ObjectDetection
+from vision_lib import ObjectDetection
 
 
 #CONSTANTS
-MODEL_NAME              = 'mobilenet_igluna_v8'
+MODEL_NAME              = 'faster_rcnn_v4'
 PATH_TO_FROZEN_GRAPH    = 'trained_model/' + MODEL_NAME + '/frozen_inference_graph.pb'
 PATH_TO_LABEL_MAP       = 'label_map.pbtxt'
 NUM_CLASSES             = 1
 SEG_TYPE                = "edge" #can be "edge", "kmeans"
-THRESHOLD               = 0.25
+THRESHOLD               = 0.2
 POSE_TYPE               = 0     #0 for PCA, 1 for ellipse fit
 IMAGE_DIR               = 'evaluation/test/'
-DETECTION_FILE          = 'detection'
+DETECTION_FILE          = 'evaluation/detection_faster_rcnn/'
 
 
 ip = ObjectDetection(PATH_TO_FROZEN_GRAPH, PATH_TO_LABEL_MAP, NUM_CLASSES, SEG_TYPE, THRESHOLD)
@@ -28,11 +26,13 @@ i = 0
 
 with ip.detection_graph.as_default():
     with tf.compat.v1.Session(graph=ip.detection_graph) as sess:
-        for filename in os.listdir(IMAGE_DIR):
+        print(sorted(os.listdir(IMAGE_DIR)))
+        for filename in sorted(os.listdir(IMAGE_DIR)):
             if filename.endswith(".jpg") or filename.endswith(".png"):
                 image_np = cv2.imread(os.path.join(IMAGE_DIR, filename))
+                image_np = cv2.cvtColor(image_np, cv2.COLOR_BGR2RGB)
+
                 #image_np= cv2.resize(image_np, (512, 512))
-                print(image_np)
 
                 start = time.time()
                 ip.detection(sess, image_np)
@@ -50,32 +50,31 @@ with ip.detection_graph.as_default():
                     classes_s.astype(np.int32),
                     scores_s,
                     ip.category_index,
-                    use_normalized_coordinates=True,
+                    use_normalized_coordinates=False,
                     line_thickness=3,
                     min_score_thresh=0,  # Objects above threshold are already selected before
                 )
-
                 cv2.imshow('Detection' + str(i), image_np)
 
+
                 #Write detections in txt files
-                """f = open(DETECTION_FILE + "file" + str(i) + ".txt", "x")
+                f = open(DETECTION_FILE + "file" + str(i) + ".txt", "x")
+                LIST = [1, 0, 3, 2]  # xmin, ymin, xmax, ymax
 
                 for j in range(len(classes_s)):
-                    f.write(str(classes_s[j]))
-                    for k in range(4):
-                        print(j, k)
-                        f.write(" " + str(boxes_s[j][k]))
-                    f.write("\n")"""
+                    f.write("potato ")
+                    f.write(str(scores_s[j]))
+                    for k, list in enumerate(LIST):
+                        f.write(" " + str(boxes_s[j][list]))
+                    f.write("\n")
 
 
                 i = i+1
-                if i > 30:
-                    break
-
             else:
                 continue
 
 
 
-cv2.waitKey()
-cv2.destroyAllWindows()
+
+if cv2.waitKey(25) & 0xFF == ord('q'):
+    cv2.destroyAllWindows()
