@@ -1,4 +1,36 @@
 import numpy as np
+import cv2
+import pyrealsense2 as rs
+
+
+def get_dist(camera, boxes):
+    depth_frame = camera.frames.get_depth_frame()
+    print(boxes)
+
+    if len(boxes) == 0:
+        dist = []
+        return dist
+    ymin = boxes[:, 0]
+    xmin = boxes[:, 1]
+    ymax = boxes[:, 2]
+    xmax = boxes[:, 3]
+
+    dist = np.zeros(len(xmin))
+    # Crop depth data:
+    for i in range(len(xmin)):
+        x = (xmax[i] - xmin[i]) / 2 + xmin[i]
+        y = (ymax[i] - ymin[i]) / 2 + ymin[i]
+
+        """depth = depth[xmin[i]:xmax[i], ymin[i]:ymax[i]].astype(float)
+        # Get data scale from the device and
+        depth = depth * depth_scale
+
+        #dist[i], _, _, _ = cv2.minMaxLoc(depth)
+        dist[i], _, _, _ = cv2.mean(depth)"""
+        dist[i] = depth_frame.get_distance(int(x), int(y))
+
+    return dist
+
 
 class Pose():
     def __init__(self, seg_type):
@@ -12,29 +44,77 @@ class Pose():
         self.box_w = 0
 
         #potato position
-        self.position = [0, 0] #x,y (in meters)
+        self.position = [0, 0, 0] #x,y, z (in meters)
         self.angle    = 0      #in radian
 
+    def compute_pose(self, track, camera):
+        """returns the orientation, width and height of a potato"""
+        if track.box_sel is None:
+            return
 
-    def instance_seg(self, image, boxes_s):
+        box_e = np.expand_dims(track.box_sel, 0)
+        mask_im, box_h_pix, box_w_pix = self.instance_seg(camera, box_e)
+        box_h_pix, box_w_pix = box_h_pix[0], box_w_pix[0]
+
+        nb_pixels = int(box_h_pix * box_w_pix)
+        mask_im_cur = mask_im[0:nb_pixels]
+        mask_im_cur = np.reshape(mask_im_cur, (int(box_w_pix), int(box_h_pix)))
+        v = self.principal_axis(mask_im_cur)
+        angle = self.compute_angle(v)
+
+        self.position= self.coordinates(track, camera)
+
+        potato_h, potato_w = self.compute_size(track, camera)
+        self.angle, self.box_w, self.box_h = angle, potato_w, potato_h
+
+
+
+
+
+    def compute_angle(self, axis):
+        y = axis[0]
+        x = axis[1]
+
+        if x == 0:
+            return 0
+        else:
+            angle = np.arctan(y / x)
+        return angle
+
+    def compute_size(self, track, camera):
+        h, w = camera.h, camera.w
+        [xmid, ymid] = track.box_mid
+        [ymin, xmin, ymax, xmax] = track.box_sel
+
+        if track.dist_sel == 0 or None:
+            return 0, 0
+
+
+        [xmid_m, ymid_m, _]= self.position
+
+        xmid_wrt_center = xmid - w / 2
+        ymid_wrt_center = ymid - h / 2
+
+        ratio_x = xmid_wrt_center / xmid_m
+        ratio_y = ymid_wrt_center / ymid_m
+
+        box_height = (ymax - ymin) / ratio_y
+        box_width = (xmax - xmin) / ratio_x
+
+        return box_height, box_width
+
+    def instance_seg(self, camera, boxes_s):
+        image = camera.rgb_image
+
         (h, w) = image.shape[:2]
         out_l = []
         box_h, box_w = [], []
-        margin = 0
         # crop image
         for i in range(boxes_s.shape[0]):
-            xmin = (boxes_s[i, 0] * h).astype(int)
-            if xmin > margin:
-                xmin = xmin - margin
-            ymin = (boxes_s[i, 1] * w - margin).astype(int)
-            if ymin > margin:
-                ymin = ymin - margin
-            xmax = (boxes_s[i, 2] * h + margin).astype(int)
-            if xmax < w - margin:
-                xmax = xmax + margin
-            ymax = (boxes_s[i, 3] * w + margin).astype(int)
-            if ymax < h - margin:
-                ymax = ymax + margin
+            xmin = boxes_s[i, 0]
+            ymin = boxes_s[i, 1]
+            xmax = boxes_s[i, 2]
+            ymax = boxes_s[i, 3]
             crop = image[xmin:xmax, ymin:ymax]
 
             # edge detection
@@ -84,7 +164,6 @@ class Pose():
         out_l = gray_r.reshape(gray.shape[0], gray.shape[1])"""
 
         return out_l, box_h, box_w
-        # plt.imshow(out_l, cmap='gray')
 
     def principal_axis(self, crop):
         X_row, X_col = np.where(crop > 200)
@@ -143,3 +222,28 @@ class Pose():
                 out_l = np.append(out_l, linear_edge_im)
 
         return out_l, box_h, box_w
+
+    def coordinates(self, track, camera):
+        """Computes the real world 3D coordinates of a potato. The camera is considered to be the origine"""
+        h, w = camera.h, camera.w
+
+        [ymin, xmin, ymax, xmax] = track.box_sel
+        dist = track.dist_sel
+
+        x_mid = ((xmin + xmax) / 2).astype(int)
+        y_mid = ((ymin + ymax) / 2).astype(int)
+
+        if dist == []:
+            return 0, 0, 0
+
+
+        depth_frame = camera.frames.get_depth_frame()
+        depth = np.asanyarray(depth_frame.get_data())
+
+        profile = camera.pipeline.get_active_profile()
+        depth_profile = rs.video_stream_profile(profile.get_stream(rs.stream.depth))
+        depth_intrinsics = depth_profile.get_intrinsics()
+        position = rs.rs2_deproject_pixel_to_point(depth_intrinsics, [x_mid, y_mid], dist)
+
+
+        return position

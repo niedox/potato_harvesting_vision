@@ -25,14 +25,15 @@ class ObjectDetection():
 
 
         #get model
+        self.category_index, self.detection_graph = None, None
         self.read_model()
-
-        #detection variables
 
         #list of detected objects above threshold
         self.boxes_s   = None
         self.classes_s = None
         self.scores_s  = None
+
+        self.bool = 0 #1 if one or more potatoes are detected
 
 
 
@@ -52,21 +53,25 @@ class ObjectDetection():
                                                                     use_display_name=True)
         category_index = label_map_util.create_category_index(categories)
 
-        return category_index, detection_graph
+        self.category_index, self.detection_graph= category_index, detection_graph
 
-    def object_detection(self, detection_graph, sess, image_np):
+    def detection(self, sess, rgb_image):
+        self.bool = 0
+        h,w = rgb_image.shape[:2]
+
+        image_np = rgb_image
         # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
         image_np_expanded = np.expand_dims(image_np, axis=0)
         # Extract image tensor
-        image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
+        image_tensor = self.detection_graph.get_tensor_by_name('image_tensor:0')
         # Extract detection boxes
-        boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
+        boxes = self.detection_graph.get_tensor_by_name('detection_boxes:0')
         # Extract detection scores
-        scores = detection_graph.get_tensor_by_name('detection_scores:0')
+        scores = self.detection_graph.get_tensor_by_name('detection_scores:0')
         # Extract detection classes
-        classes = detection_graph.get_tensor_by_name('detection_classes:0')
+        classes = self.detection_graph.get_tensor_by_name('detection_classes:0')
         # Extract number of detections
-        num_detections = detection_graph.get_tensor_by_name(
+        num_detections = self.detection_graph.get_tensor_by_name(
             'num_detections:0')
         # Actual detection.
         (boxes, scores, classes, num_detections) = sess.run(
@@ -77,9 +82,18 @@ class ObjectDetection():
         classes = np.squeeze(classes)
         scores = np.squeeze(scores)
 
-        boxes_s, classes_s, scores_s = self.select_objects(boxes, classes, scores, self.threshold)
+        self.boxes_s, self.classes_s, self.scores_s = self.select_objects(boxes, classes, scores, self.threshold)
+        if self.boxes_s.size > 0:
+            #convert boxes into pixels
+            self.boxes_s[:,0] =(self.boxes_s[:,0]*h)
+            self.boxes_s[:,1] =(self.boxes_s[:,1]*w)
+            self.boxes_s[:,2] =(self.boxes_s[:, 2]*h)
+            self.boxes_s[:,3]= (self.boxes_s[:, 3]*w)
+            self.boxes_s = self.boxes_s.astype(int)
 
-        return boxes_s, classes_s, scores_s
+        if self.scores_s.size > 0:
+            self.bool = 1
+
 
     def select_objects(self, boxes, classes, scores, thres):
         idx = np.where(scores >= thres)[0]

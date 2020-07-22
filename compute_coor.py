@@ -2,7 +2,10 @@ import numpy as np
 import cv2
 import pyrealsense2 as rs
 
-def get_dist(depth_frame, depth_scale, boxes):
+def get_dist(camera, od):
+
+    depth_frame = camera.frames.get_depth_frame()
+    boxes = od.boxes_s
 
     if len(boxes) == 0:
         dist = []

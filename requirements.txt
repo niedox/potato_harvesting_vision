@@ -1,0 +1,8 @@
+pyrealsense2
+tensorflow
+numpy
+opencv-python
+pyyaml
+python3-rospy
+
+dlib

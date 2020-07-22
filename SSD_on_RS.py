@@ -5,10 +5,10 @@ import pyrealsense2 as rs
 import numpy as np
 import cv2
 import tensorflow as tf
-import RS_camera
+import rs_camera
 
 from utils import display_output, draw_orientation
-from image_processing import ImageProcessing
+from detection import ImageProcessing
 from compute_coor import get_dist, get_coor, compute_angle, compute_size
 
 
@@ -40,12 +40,12 @@ COLORS = np.random.uniform(0, 255, size=(NUM_CLASSES, 3))
 def process_vision():
     ip = ImageProcessing(PATH_TO_FROZEN_GRAPH, PATH_TO_LABEL_MAP, NUM_CLASSES, SEG_TYPE)
     category_index, detection_graph = ip.read_model()
-    pipeline, colorizer, depth_scale = RS_camera.start_RS()
+    pipeline, colorizer, depth_scale = rs_camera.start_RS()
 
     with detection_graph.as_default():
         with tf.compat.v1.Session(graph=detection_graph) as sess:
             while True:
-                image_np, colorized_depth, frames = RS_camera.get_frames(pipeline, colorizer)
+                image_np, colorized_depth, frames = rs_camera.get_frames(pipeline, colorizer)
 
                 # i = i+1
                 # if i > SKIP:

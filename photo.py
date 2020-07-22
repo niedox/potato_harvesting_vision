@@ -1,11 +1,11 @@
-import RS_camera
+import rs_camera
 import cv2
 
-pipeline, colorizer, depth_scale = RS_camera.start_RS()
+pipeline, colorizer, depth_scale = rs_camera.start_RS()
 photo_idx = 0
 while True:
 
-    image_np, colorized_depth, frames = RS_camera.get_frames(pipeline, colorizer)
+    image_np, colorized_depth, frames = rs_camera.get_frames(pipeline, colorizer)
     cv2.imshow("RGB", image_np)
 
     if cv2.waitKey(25) & 0xFF == ord('p'):
