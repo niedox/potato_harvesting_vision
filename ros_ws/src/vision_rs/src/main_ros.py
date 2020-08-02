@@ -41,12 +41,6 @@ DISPLAY                 = 1
 EPSILON                 = 30 #coherence limit
 TRACKING_LIM            = 3  # consecutive frames
 
-#VARIABLES INITIALIZATION
-tracking_bool           = 0
-consecutive_track       = 0
-tracker                 = None
-prev_coor               = None
-x_mid, y_mid            = None, None
 
 def init_node():
     global pub, rate, msg
