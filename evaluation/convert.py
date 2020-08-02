@@ -1,8 +1,10 @@
+"""CONVERT XML LABEL FILES TO TXT GROUNDTRUTHS FILES, TO BE FOR mAP COMPUTATIONS"""
+
+
 import os
 import xml.etree.ElementTree as ET
-import numpy as np
 
-
+#directories
 XML_DIR = "evaluation/igluna_xml/"
 GROUNDTRUTH_DIR = "evaluation/groundtruth/"
 
@@ -14,8 +16,6 @@ def read_content(xml_file: str):
     class_list = []
 
     for object in root.iter('object'):
-
-        filename = root.find('filename').text
 
         ymin, xmin, ymax, xmax = None, None, None, None
 
@@ -33,6 +33,7 @@ def read_content(xml_file: str):
 
     return list_with_all_boxes, class_list
 
+
 i = 0
 for filename in sorted(os.listdir(XML_DIR)):
     boxes, class_list = read_content(XML_DIR + filename)
@@ -40,7 +41,7 @@ for filename in sorted(os.listdir(XML_DIR)):
     f = open(GROUNDTRUTH_DIR + "file" + str(i) + ".txt", "x")
     i = i + 1
 
-    LIST = [1, 0, 3, 2] #xmin, ymin, xmax, ymax
+    LIST = [1, 0, 3, 2]  #list to convert coordinates is right order (xmin, ymin, xmax, ymax)
 
     for j in range(len(class_list)):
         f.write(str(class_list[j]))

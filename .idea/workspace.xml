@@ -1,99 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0db63742-49be-44a5-b001-acb903d5715c" name="Default Changelist" comment="commit">
-      <change afterPath="$PROJECT_DIR$/vision_lib/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/potato_harvesting_vision.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/potato_harvesting_vision.iml" afterDir="false" />
+    <list default="true" id="0db63742-49be-44a5-b001-acb903d5715c" name="Default Changelist" comment="cle">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RunOnLaptop.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SSD_on_RS.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TrainSSD.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/training/TrainSSD.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backup.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/compute_coor.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/vision_lib/detection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/display.py" beforeDir="false" afterPath="$PROJECT_DIR$/vision_lib/display.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/convert.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/convert.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/convert.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file0.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file10.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file11.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file12.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file13.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file14.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file15.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file16.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file17.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file18.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file19.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file20.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file21.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file22.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file23.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file24.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file25.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file26.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file27.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file28.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file29.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file30.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file4.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file5.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file6.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file7.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file8.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_faster_rcnn/file9.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file0.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file10.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file11.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file12.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file13.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file14.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file15.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file16.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file17.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file18.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file19.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file20.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file21.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file22.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file23.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file24.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file25.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file26.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file27.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file28.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file29.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file30.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file4.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file5.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file6.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file7.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file8.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/detection_ssd/file9.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file0.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file1.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file10.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file11.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file12.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file13.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file14.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file15.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file16.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file17.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file18.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file19.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file20.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file21.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file22.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file23.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file24.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file25.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file26.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file27.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file28.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file29.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file30.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file4.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file5.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file6.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file7.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file8.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluation/groundtruth/file9.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/igluna_xml/image121_png.rf.23a2a6ba1930b6413f7ef6a154a9d015.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/igluna_xml/image123_png.rf.11fa46801bc61225d27bad404a7ea427.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/igluna_xml/image12_png.rf.25cf1664e7e2b2314e0f009ab7eb6779.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/igluna_xml/image14_png.rf.ad046efde7fd79669c1165843e4be7b3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/igluna_xml/image17_png.rf.7ad75bfafd238d1f50d4245aec59a5f3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/igluna_xml/image25_png.rf.8880417c77a01095c088c4f27b8c928e.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/igluna_xml/image51_png.rf.97e811ec70164c81082867ef94556e1f.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/igluna_xml/image52_png.rf.e02055993ee84b5db02c3abe390c2ac6.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/igluna_xml/image60_png.rf.cdb52ea0336a5ae50e67848af6de9ddb.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/igluna_xml/image66_png.rf.3c47c12853c537366c89600f32d81f58.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/igluna_xml/image71_png.rf.e8e7125314f15c4ce2188f70805fd940.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/igluna_xml/image75_png.rf.29e0db24cf283a9b75b7612935895f41.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/igluna_xml/image87_png.rf.7f0a98ff8df77ec953ececeaa8affc7d.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluation/object_detect_on_image.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/evaluation/pascalvoc.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.131c6a11f891c8b9e8de4659d829e30e.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.1496727d89eba96acb26818d0ad0e36d.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.24b95e2b298f710383d576cc9c74df40.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.25f65691872c00f1aa25acfe908cd2e1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.28fbfe9d602793a111bb5e0e8e50e28e.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.29c1102b4a315d4554587ca2e44e6acc.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.2fea3c50b4453aecb4fd577be4527044.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.3505535ff8fd98b15e962668b37053cf.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.50f1ac0d9a64d7e5a3b549c232eb3440.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.527b3b53d2473e4633d513606734a599.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.5419a4105ad3cb940bff0ba40a595f31.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.57919f83ccfdccf8fe18b4b3435060f9.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.5e3873457bf4d1e8e984a2dc1545a195.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.5ea0b377ac42fc0fd9d483575fcbdb8a.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.730d08db871d7d30dabfd3ba040a9fd2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.8c883e70a9c2446f1ae61662d4dd1610.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.a6c8c8caeca18d30a4da2dbb55aaf95a.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.af0746a8e308f67ca2dbcecf6aafa95c.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.c005fd7738ae91405f90a5d046057b1d.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.c82d93470d4bedd410fc183a2809590e.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.ca91dc472722f9142227b52359efb8e6.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.ce72edc94de6aa4c6de57ce44ed0d483.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.da39ee59eac05b4c15e65803467f5fac.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.e3fa3e25d2304d431e07c983c7bb81dc.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.e4444bb515efdaf549e51a287970a3d4.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.e506ad528d9f0c56f24b555bc13b4956.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.e8191141e7f333ab5da49229ac3516a9.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.f13fcd8b28b8ba02c086dda2ed5c99b4.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.f312afaf3c9be011d215d1144211eb67.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.f332b643f4d3d210dbf6ddc6f5e8242e.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/evaluation/test/i.rf.f73aa353611397683048552e231274c4.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/label_map.pbtxt" beforeDir="false" afterPath="$PROJECT_DIR$/ros_ws/src/vision_rs/src/label_map.pbtxt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/results/potato.png" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/results/potato.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/results/results.txt" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/results/results.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/photo.py" beforeDir="false" afterPath="$PROJECT_DIR$/photo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/photo_toplevel/image1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/photo_toplevel/image10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/photo_toplevel/image11.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/photo_toplevel/image12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/photo_toplevel/image13.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/photo_toplevel/image14.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/photo_toplevel/image2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/photo_toplevel/image3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/photo_toplevel/image4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/photo_toplevel/image5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/photo_toplevel/image6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/photo_toplevel/image7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/photo_toplevel/image8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/photo_toplevel/image9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pose_computation.py" beforeDir="false" afterPath="$PROJECT_DIR$/vision_lib/pose_computation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rs_camera.py" beforeDir="false" afterPath="$PROJECT_DIR$/vision_lib/rs_camera.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/track_object.py" beforeDir="false" afterPath="$PROJECT_DIR$/vision_lib/track_object.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/myworries.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/photo.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ros_ws/src/vision_rs/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/test_orientation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ros_ws/src/vision_rs/src/main_ros.py" beforeDir="false" afterPath="$PROJECT_DIR$/ros_ws/src/vision_rs/src/main_ros.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trained_model/faster_rcnn_v4/checkpoint" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/trained_model/faster_rcnn_v4/frozen_inference_graph.pb" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/trained_model/faster_rcnn_v4/model.ckpt.data-00000-of-00001" beforeDir="false" />
@@ -115,7 +128,10 @@
       <change beforePath="$PROJECT_DIR$/trained_model/mobilenet_igluna_v8/model.ckpt.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/trained_model/mobilenet_igluna_v8/pipeline.config" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/trained_model/mobilenet_igluna_v8/saved_model/saved_model.pb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/vision_lib/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vision_lib/detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/vision_lib/detection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vision_lib/display.py" beforeDir="false" afterPath="$PROJECT_DIR$/vision_lib/display.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vision_lib/pose_computation.py" beforeDir="false" afterPath="$PROJECT_DIR$/vision_lib/pose_computation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vision_lib/track_object.py" beforeDir="false" afterPath="$PROJECT_DIR$/vision_lib/track_object.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,21 +159,21 @@
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/evaluation/detections" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/evaluation/orientation_test/0_high_rgb" />
+      <recent name="$PROJECT_DIR$/evaluation/orientation_test/135_low_depth" />
+      <recent name="$PROJECT_DIR$/evaluation/orientation_test/45_high_depth" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/ros_ws/src/vision_rs/src" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/evaluation/lib" />
       <recent name="$PROJECT_DIR$/ros_ws/src/vision_rs/src/trained_model" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/ros_ws/src/vision_rs/src" />
-      <recent name="$PROJECT_DIR$/vision_lib" />
-      <recent name="$PROJECT_DIR$/training" />
-      <recent name="$PROJECT_DIR$/evaluation" />
-    </key>
   </component>
-  <component name="RunManager" selected="Python._init_paths">
+  <component name="RunManager" selected="Python.main">
     <configuration name="RunOnLaptop" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="potato_harvesting_vision" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -265,6 +281,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="main2" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="potato_harvesting_vision" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/GBH/bin/python" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="object_detection_on _image" type="PythonConfigurationType" factoryName="Python">
       <module name="potato_harvesting_vision" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -300,7 +337,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/evaluation/pascalvoc.py" />
-      <option name="PARAMETERS" value="-gt groundtruth -det detection_faster_rcnn -gtformat xyrb -detformat xyrb" />
+      <option name="PARAMETERS" value="-gt groundtruth -det detection_faster_rcnn_resnet -gtformat xyrb -detformat xyrb" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -330,15 +367,38 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="test_orientation" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="potato_harvesting_vision" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda3/envs/GBH/bin/python" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/evaluation/test_orientation.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.RunOnLaptop" />
       <item itemvalue="Python.SSD_on_RS" />
       <item itemvalue="Python.convert" />
       <item itemvalue="Python.pascalvoc" />
       <item itemvalue="Python.main" />
+      <item itemvalue="Python.main2" />
       <item itemvalue="Python._init_paths" />
       <item itemvalue="Python.object_detection_on _image" />
       <item itemvalue="Python.photo" />
+      <item itemvalue="Python.test_orientation" />
     </list>
   </component>
   <component name="SvnConfiguration">
@@ -370,7 +430,14 @@
       <option name="project" value="LOCAL" />
       <updated>1595407171119</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="include ros workspace">
+      <created>1595454547082</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1595454547082</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -390,61 +457,70 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit" />
+    <MESSAGE value="include ros workspace" />
+    <option name="LAST_COMMIT_MESSAGE" value="include ros workspace" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="475" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1595453793469">
+    <state x="475" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1596128326976">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state x="475" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1595453793469" />
+    <state x="475" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1596128326976" />
+    <state x="670" y="355" width="642" height="403" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1595762848068">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="670" y="355" width="642" height="403" key="#com.intellij.fileTypes.FileTypeChooser/72.27.1848.1053@72.27.1848.1053" timestamp="1595762848068" />
     <state x="729" y="302" width="524" height="509" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1595447721127">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="729" y="302" width="524" height="509" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1595447721127" />
-    <state x="535" y="99" width="912" height="916" key="CommitChangelistDialog2" timestamp="1595454431721">
+    <state x="535" y="99" width="912" height="916" key="CommitChangelistDialog2" timestamp="1596318794468">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state x="535" y="99" width="912" height="916" key="CommitChangelistDialog2/72.27.1848.1053@72.27.1848.1053" timestamp="1595454431721" />
+    <state x="535" y="99" width="912" height="916" key="CommitChangelistDialog2/72.27.1848.1053@72.27.1848.1053" timestamp="1596318794468" />
     <state x="779" y="311" width="424" height="491" key="FileChooserDialogImpl" timestamp="1595197424080">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="779" y="311" width="424" height="491" key="FileChooserDialogImpl/72.27.1848.1053@72.27.1848.1053" timestamp="1595197424080" />
-    <state width="1825" height="260" key="GridCell.Tab.0.bottom" timestamp="1595454307315">
+    <state width="1825" height="298" key="GridCell.Tab.0.bottom" timestamp="1596361831868">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state width="1825" height="260" key="GridCell.Tab.0.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1595454307315" />
-    <state width="1825" height="260" key="GridCell.Tab.0.center" timestamp="1595454307315">
+    <state width="1825" height="298" key="GridCell.Tab.0.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1596361831868" />
+    <state width="1825" height="298" key="GridCell.Tab.0.center" timestamp="1596361831868">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state width="1825" height="260" key="GridCell.Tab.0.center/72.27.1848.1053@72.27.1848.1053" timestamp="1595454307315" />
-    <state width="1825" height="260" key="GridCell.Tab.0.left" timestamp="1595454307315">
+    <state width="1825" height="298" key="GridCell.Tab.0.center/72.27.1848.1053@72.27.1848.1053" timestamp="1596361831868" />
+    <state width="1825" height="298" key="GridCell.Tab.0.left" timestamp="1596361831868">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state width="1825" height="260" key="GridCell.Tab.0.left/72.27.1848.1053@72.27.1848.1053" timestamp="1595454307315" />
-    <state width="1825" height="260" key="GridCell.Tab.0.right" timestamp="1595454307315">
+    <state width="1825" height="298" key="GridCell.Tab.0.left/72.27.1848.1053@72.27.1848.1053" timestamp="1596361831868" />
+    <state width="1825" height="298" key="GridCell.Tab.0.right" timestamp="1596361831868">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state width="1825" height="260" key="GridCell.Tab.0.right/72.27.1848.1053@72.27.1848.1053" timestamp="1595454307315" />
-    <state width="1825" height="255" key="GridCell.Tab.1.bottom" timestamp="1595236844217">
+    <state width="1825" height="298" key="GridCell.Tab.0.right/72.27.1848.1053@72.27.1848.1053" timestamp="1596361831868" />
+    <state width="1825" height="268" key="GridCell.Tab.1.bottom" timestamp="1596361225049">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state width="1825" height="255" key="GridCell.Tab.1.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1595236844217" />
-    <state width="1825" height="255" key="GridCell.Tab.1.center" timestamp="1595236844217">
+    <state width="1825" height="268" key="GridCell.Tab.1.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1596361225049" />
+    <state width="1825" height="268" key="GridCell.Tab.1.center" timestamp="1596361225049">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state width="1825" height="255" key="GridCell.Tab.1.center/72.27.1848.1053@72.27.1848.1053" timestamp="1595236844217" />
-    <state width="1825" height="255" key="GridCell.Tab.1.left" timestamp="1595236844217">
+    <state width="1825" height="268" key="GridCell.Tab.1.center/72.27.1848.1053@72.27.1848.1053" timestamp="1596361225049" />
+    <state width="1825" height="268" key="GridCell.Tab.1.left" timestamp="1596361225049">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state width="1825" height="255" key="GridCell.Tab.1.left/72.27.1848.1053@72.27.1848.1053" timestamp="1595236844217" />
-    <state width="1825" height="255" key="GridCell.Tab.1.right" timestamp="1595236844217">
+    <state width="1825" height="268" key="GridCell.Tab.1.left/72.27.1848.1053@72.27.1848.1053" timestamp="1596361225049" />
+    <state width="1825" height="268" key="GridCell.Tab.1.right" timestamp="1596361225049">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
-    <state width="1825" height="255" key="GridCell.Tab.1.right/72.27.1848.1053@72.27.1848.1053" timestamp="1595236844217" />
+    <state width="1825" height="268" key="GridCell.Tab.1.right/72.27.1848.1053@72.27.1848.1053" timestamp="1596361225049" />
     <state x="388" y="39" width="1125" height="912" key="SettingsEditor" timestamp="1594977667353">
       <screen x="72" y="27" width="1848" height="1053" />
     </state>
     <state x="388" y="39" width="1125" height="912" key="SettingsEditor/72.27.1848.1053@72.27.1848.1053" timestamp="1594977667353" />
+    <state x="659" y="259" width="672" height="678" key="search.everywhere.popup" timestamp="1595775121836">
+      <screen x="72" y="27" width="1848" height="1053" />
+    </state>
+    <state x="659" y="259" width="672" height="678" key="search.everywhere.popup/72.27.1848.1053@72.27.1848.1053" timestamp="1595775121836" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -453,6 +529,11 @@
           <url>file://$PROJECT_DIR$/evaluation/lib/BoundingBox.py</url>
           <line>11</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/evaluation/test_orientation.py</url>
+          <line>232</line>
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

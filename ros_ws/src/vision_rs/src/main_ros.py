@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+"""Perception algorithm for ROS environment"""
 
 import cv2
 import tensorflow as tf
@@ -9,10 +10,10 @@ import rospy
 import _init_paths
 from vision_rs.msg import Vision
 from vision_lib.rs_camera import RS_camera
-from detection import ObjectDetection
-from track_object import ObjectTracker
-from pose_computation import Pose
-from display import display
+from vision_lib.detection import ObjectDetection
+from vision_lib.track_object import ObjectTracker
+from vision_lib.pose_computation import Pose
+from vision_lib.display import display
 from pathlib import Path
 
 
@@ -21,18 +22,24 @@ workingPath = str(Path(currentPath).parents[3])
 
 
 
-#CONSTANTS
-MODEL_NAME              = 'mobilenet_igluna_v8'
+"""CONSTANTS"""
+
+#Object Detection:
+MODEL_NAME              = 'ssd300_mobilenet'
 PATH_TO_FROZEN_GRAPH    = workingPath + '/trained_model/' + MODEL_NAME + '/frozen_inference_graph.pb'
 PATH_TO_LABEL_MAP       = workingPath + '/label_map.pbtxt'
 NUM_CLASSES             = 1
-SEG_TYPE                = "edge" #can be "edge", "kmeans"
-THRESHOLD               = 0.99
+THRESHOLD               = 0.99 #detection threshold
 
+
+#Pose Estimation:
+SEG_TYPE                = "edge" #can be "edge", "kmeans"
 POSE_TYPE               = 0     #0 for PCA, 1 for ellipse fit
 DISPLAY                 = 1
-EPSILON                 = 30
-TRACKING_LIM            = 3 # consecutive frames
+
+#Tracking
+EPSILON                 = 30 #coherence limit
+TRACKING_LIM            = 3  # consecutive frames
 
 #VARIABLES INITIALIZATION
 tracking_bool           = 0
@@ -62,6 +69,8 @@ def publish(od, pose):
 
 
 def run_vision():
+
+    #initialize classes
     camera = RS_camera()
     od = ObjectDetection(PATH_TO_FROZEN_GRAPH, PATH_TO_LABEL_MAP, NUM_CLASSES, SEG_TYPE, THRESHOLD)
     pose = Pose(SEG_TYPE)
@@ -76,6 +85,7 @@ def run_vision():
                 track.track_object(od, camera)
                 pose.compute_pose(track, camera)
                 display(camera, od, track, pose, DISPLAY)
+
                 track.update()
 
                 publish(od, pose)

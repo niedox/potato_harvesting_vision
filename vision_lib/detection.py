@@ -1,11 +1,9 @@
+"""Object Detection"""
+
 import numpy as np
-import cv2
 import tensorflow as tf
 
 from object_detection.utils import label_map_util
-from scipy import ndimage
-from sklearn.cluster import KMeans
-from sklearn.decomposition import PCA
 
 
 # Patch the location of gfile
@@ -17,22 +15,22 @@ class ObjectDetection():
 
     def __init__(self, path_to_frozen_graph, path_to_label_map, num_classes, seg_type, threshold):
 
-        #object detection NN parameter
+        #object detection NN parameters
         self.path_to_frozen_graph = path_to_frozen_graph
         self.path_to_label_map = path_to_label_map
         self.num_classes = num_classes
         self.threshold = threshold
 
-
         #get model
         self.category_index, self.detection_graph = None, None
         self.read_model()
 
-        #list of detected objects above threshold
+        #list of detected objects above score threshold
         self.boxes_s   = None
         self.classes_s = None
         self.scores_s  = None
 
+        #detection boolean
         self.bool = 0 #1 if one or more potatoes are detected
 
 
@@ -40,6 +38,7 @@ class ObjectDetection():
     def read_model(self):
         print("reads frozen graph")
         detection_graph = tf.Graph()
+
         with detection_graph.as_default():
             od_graph_def = tf.compat.v1.GraphDef()
             with tf.gfile.GFile(self.path_to_frozen_graph, 'rb') as fid:
@@ -54,6 +53,22 @@ class ObjectDetection():
         category_index = label_map_util.create_category_index(categories)
 
         self.category_index, self.detection_graph= category_index, detection_graph
+
+    def select_objects(self, boxes, classes, scores, thres):
+        """Selects detected object above threshold"""
+
+        idx = np.where(scores >= thres)[0]
+        if idx.size > 0:
+            boxes = boxes[idx, :]
+            classes = classes[idx]
+            scores = scores[idx]
+
+        else:
+            boxes = []
+            classes = []
+            scores = []
+
+        return np.array(boxes), np.array(classes), np.array(scores)
 
     def detection(self, sess, rgb_image):
         self.bool = 0
@@ -73,6 +88,7 @@ class ObjectDetection():
         # Extract number of detections
         num_detections = self.detection_graph.get_tensor_by_name(
             'num_detections:0')
+
         # Actual detection.
         (boxes, scores, classes, num_detections) = sess.run(
             [boxes, scores, classes, num_detections],
@@ -84,7 +100,7 @@ class ObjectDetection():
 
         self.boxes_s, self.classes_s, self.scores_s = self.select_objects(boxes, classes, scores, self.threshold)
         if self.boxes_s.size > 0:
-            #convert boxes into pixels
+            #convert boxes relative coor into absolute coor
             self.boxes_s[:,0] =(self.boxes_s[:,0]*h)
             self.boxes_s[:,1] =(self.boxes_s[:,1]*w)
             self.boxes_s[:,2] =(self.boxes_s[:, 2]*h)
@@ -95,19 +111,6 @@ class ObjectDetection():
             self.bool = 1
 
 
-    def select_objects(self, boxes, classes, scores, thres):
-        idx = np.where(scores >= thres)[0]
-        if idx.size > 0:
-            boxes = boxes[idx, :]
-            classes = classes[idx]
-            scores = scores[idx]
-
-        else:
-            boxes = []
-            classes = []
-            scores = []
-
-        return np.array(boxes), np.array(classes), np.array(scores)
 
 
 

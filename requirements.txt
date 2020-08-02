@@ -4,5 +4,5 @@ numpy
 opencv-python
 pyyaml
 python3-rospy
-
+scikit-learn
 dlib
