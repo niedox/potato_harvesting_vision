@@ -36,13 +36,6 @@ TRACKING_LIM            = 10 # consecutive frames
 #Display
 DISPLAY                 = 1
 
-#VARIABLES INITIALIZATION
-tracking_bool           = 0
-consecutive_track       = 0
-tracker                 = None
-prev_coor               = None
-x_mid, y_mid            = None, None
-
 
 def run_vision():
     camera = RS_camera()
@@ -66,10 +59,6 @@ def run_vision():
                 if cv2.waitKey(25) & 0xFF == ord('q'):
                     cv2.destroyAllWindows()
                     break
-
-
-
-
 
 
 if __name__ == '__main__':
