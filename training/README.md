@@ -18,6 +18,8 @@ Note that:
 - "preprocessing" is provided and contains scripts that set the data in the right format for training
 - "pre-trained-models" is meant to contain pre-trained-models obtained from the tensorflow detection zoo.
 
+For more details about how the models are trained, see the following tutorial: https://medium.com/analytics-vidhya/training-an-object-detection-model-with-tensorflow-api-using-google-colab-4f9a688d5e8b 
+
 
 
 
