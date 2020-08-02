@@ -1,7 +1,7 @@
 The ipynb file is used to train the object detection models on Google Colab.
 It requires a folder called training_demo with the following structure:
 
-"""bash
+""" bash
 └── training_demo
     ├── annotations
     ├── config_files
