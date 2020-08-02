@@ -12,6 +12,5 @@ It requires a folder called training_demo with the following structure:
     ├── pre-trained-models
     ├── saved_trained_models
     └── training
-    
 ```
 
