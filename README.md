@@ -1,5 +1,5 @@
 # potato_harvesting_vision
-Computer vision algorithm for harvesting of potatoes growing in aeroponics with a robotic arm.
+Computer vision algorithm for harvesting potatoes growing in aeroponics with a robotic arm.
 Potato Detection and Pose Estimation (3D-coordinates, size, orientation) are performed.
 Camera: Intel Realsense D415
 
